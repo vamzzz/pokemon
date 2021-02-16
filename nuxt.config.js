@@ -31,7 +31,23 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ['@nuxtjs/axios','@nuxtjs/firebase'],
+
+  firebase: {
+    config: {
+      apiKey: 'AIzaSyDT8ciXqo8IBggcqJTK-8SlPm2yXUwLa-8',
+      authDomain: 'pokemon-d3310.firebaseapp.com',
+      databaseURL: 'https://pokemon-d3310-default-rtdb.firebaseio.com',
+      projectId: 'pokemon-d3310',
+      storageBucket: 'pokemon-d3310.appspot.com',
+      messagingSenderId: '328145011537',
+      appId: '1:328145011537:web:ed172428ab251861040970',
+      measurementId: 'G-5FP9LNC007',
+    },
+    services: {
+      database: true
+    }
+  },
   /*
    ** Build configuration
    */

@@ -1,44 +1,70 @@
 <template>
   <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        nuxtjs
-      </h1>
-      <h2 class="subtitle">
-        My astonishing Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    
+    <pokedex></pokedex>
+    <!-- <button
+      @click="setUsersInFirebase"
+    >
+      Hello
+    </button> -->
+    
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Logo from '~/components/Logo.vue';
+import Pokedex from '~/components/pokedex.vue'
+import axios from "axios";
+import {mapMutations} from 'vuex';
 
 export default {
   components: {
-    Logo
+    Logo, Pokedex
+  },
+
+  data() {
+    return {
+      allPokemon: [],
+      firebaseValue: null,
+    }
+  },
+
+  computed: {
+  },
+
+  methods: {
+    ...mapMutations([
+      'setAllPokemon'
+    ]),
+    
+    async setDataInFirebase() {
+      await this.$fire.database.ref('pokemon').set(this.transformedPokemonData);
+    },
+
+    async setUsersInFirebase() {
+      await this.$fire.database.ref('selectedCards').set(this.selectedCards);
+    }
+  },
+
+  async mounted() {
+    axios.get("https://api.pokemontcg.io/v2/cards?q=set.id:base1").then(response => {
+      this.setAllPokemon(response.data.data)
+      // this.allPokemon = response.data.data;
+    })
+    // const messageRef = this.$fire.database.ref('test');
+    // const snapshot = await messageRef.once('value');
+    // this.firebaseValue = snapshot.val();
+    // await this.setDataInFirebase();
   }
 }
 </script>
 
 <style>
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .container {
   margin: 0 auto;
   min-height: 100vh;
@@ -46,6 +72,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+  flex-wrap: wrap;
 }
 
 .title {
