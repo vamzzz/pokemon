@@ -4,10 +4,10 @@
             <top-lights></top-lights>
         </div>
         <!-- Center Screen -->
-        <div class="screen-container flex">
-            <card v-for="pokemon in selectedCards"
+        <div class="screen-container flex" v-if="Object.keys(allPokemon).length > 0 && Object.keys(selectedCards).length > 0">
+            <card v-for="pokemon in selectedCards[`user${userNumber}`].cardsChosen"
                 :key="pokemon"
-                :pokemonUrl="transformedPokemonData[pokemon].images.small"
+                :pokemonUrl="allPokemon[pokemon.toLowerCase()].images.small"
             ></card>
         </div>
         <div class="buttons-container">
@@ -36,12 +36,18 @@ export default {
 
   computed: {
     ...mapGetters([
-      'transformedPokemonData',
-      'selectedCards'
+      'allPokemon',
+      'selectedCards',
+      'userNumber'
     ]),
 
-
   },
+
+  // created() {
+  //   console.log(Object.keys(this.allPokemon));
+  //   console.log(Object.keys(this.allPokemon).length);
+  //   console.log(Object.keys(this.selectedCards));
+  // }
 
 }
 </script>

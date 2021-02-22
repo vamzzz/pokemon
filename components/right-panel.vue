@@ -16,28 +16,23 @@
         <!-- Top screen -->
         <div class="top-screen-container">
           <div id="about-screen" class="right-panel-screen">
-            Height: 70cm Weight: 6.9kg
+            {{ selectedCards[`user${userNumber}`].name }}
           </div>
         </div>
         <!-- Bottom screens -->
         <div class="bottom-screens-container">
           <div class="square-buttons-container">
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
-            <div class="blue-square"></div>
+            <div class="blue-square" v-for="row in Object.keys(selectedCards).length"
+              :key="row"
+              @click="setUserNumber(row)">
+            </div>
           </div>
         </div>
     </div>
 </template>
 
 <script>
+import {mapMutations, mapGetters} from 'vuex';
 
 export default {
   components: {
@@ -49,7 +44,17 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'selectedCards',
+      'userNumber'
+    ])
   },
+
+  methods: {
+    ...mapMutations([
+      'setUserNumber'
+    ])
+  }
 
 }
 </script>
@@ -66,6 +71,7 @@ export default {
   border-bottom: solid black 5px;
   border-bottom-right-radius: 10px;
 }
+
 #right-panel::before {
   content: '';
   position: absolute;
@@ -113,7 +119,9 @@ export default {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
+  z-index: 100;
 }
+
 .blue-square {
   border-radius: 2px;
   border: black 1.5px solid;
@@ -122,6 +130,8 @@ export default {
   width: 80px;
   height: 80px;
   margin: 10px;
+  cursor: pointer;
+  z-index: 100000;
 }
 
 /* center buttons */

@@ -2,11 +2,11 @@
   <div class="container">
     
     <pokedex></pokedex>
-    <!-- <button
+    <button
       @click="setUsersInFirebase"
     >
       Hello
-    </button> -->
+    </button>
     
   </div>
 </template>
@@ -15,7 +15,7 @@
 import Logo from '~/components/Logo.vue';
 import Pokedex from '~/components/pokedex.vue'
 import axios from "axios";
-import {mapMutations} from 'vuex';
+import {mapMutations, mapGetters} from 'vuex';
 
 export default {
   components: {
@@ -30,11 +30,15 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      'selectedCards'
+    ])
   },
 
   methods: {
     ...mapMutations([
-      'setAllPokemon'
+      'setAllPokemon',
+      'setSelectedCards'
     ]),
     
     async setDataInFirebase() {
@@ -46,15 +50,18 @@ export default {
     }
   },
 
-  async mounted() {
-    axios.get("https://api.pokemontcg.io/v2/cards?q=set.id:base1").then(response => {
-      this.setAllPokemon(response.data.data)
-      // this.allPokemon = response.data.data;
-    })
-    // const messageRef = this.$fire.database.ref('test');
-    // const snapshot = await messageRef.once('value');
-    // this.firebaseValue = snapshot.val();
-    // await this.setDataInFirebase();
+  async created() {
+    // axios.get("https://api.pokemontcg.io/v2/cards?q=set.id:base1").then(response => {
+    //   this.setAllPokemon(response.data.data)
+    //   // this.allPokemon = response.data.data;
+    // })
+    const pokemonRef = this.$fire.database.ref('pokemon');
+    const pokemonData = await pokemonRef.once('value');
+    this.setAllPokemon(pokemonData.val());
+
+    const selectedCards = this.$fire.database.ref('selectedCards');
+    const selectedCardsData = await selectedCards.once('value');
+    this.setSelectedCards(selectedCardsData.val());
   }
 }
 </script>

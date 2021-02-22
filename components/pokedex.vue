@@ -25,7 +25,7 @@ export default {
 
     computed: {
       ...mapGetters([
-        'counter'
+        'userNumber'
       ])
     },
 
