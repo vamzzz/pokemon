@@ -5,7 +5,7 @@
         </div>
         <!-- Center Screen -->
         <div class="screen-container flex" v-if="Object.keys(allPokemon).length > 0 && Object.keys(selectedCards).length > 0">
-            <card v-for="(index) in 7"
+            <card v-for="(index) in 14"
                 :key="index"
                 :pokemonUrl="pokemonUrl(index)"
                 :pokemonName="pokemonName(index)"
@@ -91,13 +91,14 @@ export default {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   border-top-right-radius: 7px;
+  max-width: 1000px;
 }
 
 .screen-container {
     margin: 15px;
     padding-top: 0px;
     overflow-y: auto;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .buttons-container {

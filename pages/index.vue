@@ -2,11 +2,6 @@
   <div class="container">
     
     <pokedex></pokedex>
-    <!-- <button
-      @click="setUsersInFirebase"
-    >
-      Hello
-    </button> -->
     
   </div>
 </template>
@@ -31,7 +26,8 @@ export default {
 
   computed: {
     ...mapGetters([
-      'selectedCards'
+      'selectedCards',
+      'newData'
     ])
   },
 
@@ -46,7 +42,7 @@ export default {
     },
 
     async setUsersInFirebase() {
-      await this.$fire.database.ref('selectedCards').set(this.selectedCards);
+      await this.$fire.database.ref('selectedCards').set(this.newData);
     },
 
     async getDataFromFirebase() {
