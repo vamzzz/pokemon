@@ -1,6 +1,7 @@
 <template>
     <div class="left-top-container">
         <div class="lights-container">
+          <div class="big-button">
             <div class="big-light-boarder">
                 <div class="big-light blue">
                 <div class="big-dot light-blue"></div>
@@ -17,10 +18,14 @@
                 <div class="dot light-green"></div>
                 </div>
             </div>
+          </div>
+          <div class="yellow-button yellow" @click="getDataFromFirebase()">
+            <img src="../assets/refresh.png" alt="">
+          </div>
         </div>
-        <svg height="100" width="750" class="left-svg">
+        <svg height="100" width="100%" class="left-svg">
             <polyline
-                points="0,30 70,30 90,5 824,5"
+                points="0,30 70,30 90,5 1050,5"
                 style="fill: none; stroke: black; stroke-width: 5"
             />
         </svg>
@@ -28,7 +33,7 @@
 </template>
 
 <script>
-
+import {mapMutations} from 'vuex';
 export default {
   components: {
   },
@@ -42,26 +47,40 @@ export default {
   computed: {
   },
 
+  methods: {
+    ...mapMutations([
+      'setSelectedCards'
+    ]),
+
+    async getDataFromFirebase() {
+      const selectedCards = this.$fire.database.ref('selectedCards');
+      const selectedCardsData = await selectedCards.once('value');
+      this.setSelectedCards(selectedCardsData.val());
+    }
+  }
+
 }
 </script>
 
 <style scoped>
 .left-top-container {
-    padding-left: 10px;
     padding-top: 10px;
+}
+
+.big-button {
+  display: flex;
 }
 
 .lights-container {
   position: relative;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 }
 
 .left-svg {
   z-index: +5;
   left: 300px;
-  margin-left: -10px;
 }
 
 .big-light-boarder {
@@ -115,5 +134,37 @@ export default {
   top: 3px;
   left: 3px;
   border-radius: 50%;
+}
+
+.yellow-button {
+  justify-self: end;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: solid 2px black;
+  margin-left: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.yellow-button .big-dot {
+  height: 10px;
+  width: 10px;
+  position: relative;
+  top: 3px;
+  left: 5px;
+  border-radius: 50%;
+}
+
+.yellow {
+  background-color: #fecb65;
+}
+
+img {
+  width: 30px;
+  height: 30px;
 }
 </style>

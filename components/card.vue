@@ -9,6 +9,7 @@
             <div class="small-light red">
                 <div class="dot light-red"></div>
             </div>
+            <p> {{ pokemonName }}</p>
             <div class="burger">
                 <div class="line"></div>
                 <div class="line"></div>
@@ -22,7 +23,7 @@
 <script>
 
 export default {
-  props: ['pokemonUrl'],
+  props: ['pokemonUrl', 'pokemonName'],
 
   data() {
     return {
@@ -31,6 +32,13 @@ export default {
   },
 
   computed: {
+    imageSource() {
+      if (this.pokemonUrl.includes('https')) {
+        return `url(${this.pokemonUrl})`
+      } else {
+        return this.pokemonUrl
+      }
+    }
   },
 
 }

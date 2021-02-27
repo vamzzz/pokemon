@@ -15,8 +15,9 @@
         </div>
         <!-- Top screen -->
         <div class="top-screen-container">
-          <div id="about-screen" class="right-panel-screen">
-            {{ selectedCards[`user${userNumber}`].name }}
+          <div id="about-screen" class="right-panel-screen" v-if="Object.keys(selectedCards).length > 0">
+            {{ selectedCards[`user${userNumber}`].name }} <br>
+            {{ selectedCards[`user${userNumber}`].igHandle }}
           </div>
         </div>
         <!-- Bottom screens -->

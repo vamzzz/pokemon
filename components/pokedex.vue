@@ -1,7 +1,7 @@
 <template>
     <div id="pokedex">
         <left-panel></left-panel>
-        <right-panel></right-panel>
+        <!-- <right-panel></right-panel> -->
     </div>
 </template>
 
@@ -35,8 +35,7 @@ export default {
 <style>
 
 #pokedex {
-    height: 750px;
-    width: calc(750px * 2);
+    height: 90vh;;
     display: flex;
     border-radius: 10px;
 }

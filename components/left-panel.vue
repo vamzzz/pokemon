@@ -5,13 +5,18 @@
         </div>
         <!-- Center Screen -->
         <div class="screen-container flex" v-if="Object.keys(allPokemon).length > 0 && Object.keys(selectedCards).length > 0">
-            <card v-for="pokemon in selectedCards[`user${userNumber}`].cardsChosen"
-                :key="pokemon"
-                :pokemonUrl="allPokemon[pokemon.toLowerCase()].images.small"
+            <card v-for="(index) in 7"
+                :key="index"
+                :pokemonUrl="pokemonUrl(index)"
+                :pokemonName="pokemonName(index)"
             ></card>
         </div>
         <div class="buttons-container">
-            <div class="upper-buttons-container">
+            <div class="blue-square" v-for="row in Object.keys(selectedCards).length"
+              :key="row"
+              @click="setUserNumber(row)"
+              >
+              <img src="../assets/vamshi.png" alt="">
             </div>
         </div>
     </div>
@@ -20,7 +25,7 @@
 <script>
 import Card from './card.vue';
 import TopLights from './top-lights.vue';
-import {mapGetters} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   components: {
@@ -43,11 +48,33 @@ export default {
 
   },
 
-  // created() {
-  //   console.log(Object.keys(this.allPokemon));
-  //   console.log(Object.keys(this.allPokemon).length);
-  //   console.log(Object.keys(this.selectedCards));
-  // }
+  methods: {
+    ...mapMutations([
+      'setUserNumber'
+    ]),
+
+
+    pokemonUrl(index) {
+      let alreadySelectedCard = this.selectedCards[`user${this.userNumber}`].cardsChosen
+      if (index <= alreadySelectedCard.length) {
+        let pokemonName = this.selectedCards[`user${this.userNumber}`].cardsChosen[index-1]
+        return this.allPokemon[pokemonName.toLowerCase()].images.small;
+      } else {
+        return 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/201.png';
+      }      
+    },
+    
+    pokemonName(index) {
+      let alreadySelectedCard = this.selectedCards[`user${this.userNumber}`].cardsChosen
+      if (index <= alreadySelectedCard.length) {
+        let pokemonName = this.selectedCards[`user${this.userNumber}`].cardsChosen[index-1]
+        return this.allPokemon[pokemonName.toLowerCase()].name;
+      } else {
+        return "TBD";
+      }
+    },
+    
+  }
 
 }
 </script>
@@ -57,9 +84,9 @@ export default {
   background-color: var(--main-bg-color);
   box-sizing: border-box;
   height: 100%;
-  width: 50%;
+  width: 100%;
   display: grid;
-  grid-template-rows: 15% 80% 5%;
+  grid-template-rows: 15% 70% 15%;
   border: solid black 5px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -67,19 +94,39 @@ export default {
 }
 
 .screen-container {
-    padding: 30px;
+    margin: 15px;
     padding-top: 0px;
     overflow-y: auto;
+    justify-content: center;
 }
 
 .buttons-container {
-  display: grid;
-  grid-template-rows: 40% 60%;
+  border-top: solid black 5px;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
 }
 
 .upper-buttons-container {
   display: flex;
   align-items: top;
   justify-content: flex-start;
+}
+
+.blue-square {
+  border-radius: 2px;
+  border: black 3px solid;
+  background-color: var(--square-buttons-color);
+  box-shadow: inset -2px -2px #3298cb;
+  width: 80px;
+  height: 80px;
+  margin: 10px;
+  cursor: pointer;
+  z-index: 100000;
+}
+
+img {
+  width: 75px;
+  height: 75px;
 }
 </style>

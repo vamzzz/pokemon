@@ -2,11 +2,11 @@
   <div class="container">
     
     <pokedex></pokedex>
-    <button
+    <!-- <button
       @click="setUsersInFirebase"
     >
       Hello
-    </button>
+    </button> -->
     
   </div>
 </template>
@@ -47,21 +47,21 @@ export default {
 
     async setUsersInFirebase() {
       await this.$fire.database.ref('selectedCards').set(this.selectedCards);
+    },
+
+    async getDataFromFirebase() {
+      const selectedCards = this.$fire.database.ref('selectedCards');
+      const selectedCardsData = await selectedCards.once('value');
+      this.setSelectedCards(selectedCardsData.val());
     }
   },
 
   async created() {
-    // axios.get("https://api.pokemontcg.io/v2/cards?q=set.id:base1").then(response => {
-    //   this.setAllPokemon(response.data.data)
-    //   // this.allPokemon = response.data.data;
-    // })
     const pokemonRef = this.$fire.database.ref('pokemon');
     const pokemonData = await pokemonRef.once('value');
     this.setAllPokemon(pokemonData.val());
 
-    const selectedCards = this.$fire.database.ref('selectedCards');
-    const selectedCardsData = await selectedCards.once('value');
-    this.setSelectedCards(selectedCardsData.val());
+    await this.getDataFromFirebase()
   }
 }
 </script>
@@ -71,15 +71,41 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
+body {
+  background-image: url(../assets/background.jpg); 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  resize: both;
+  overflow: scroll;
+}
+
+img.bg {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+	
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+	
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   flex-wrap: wrap;
+  width: 90%;
+  height: 100vh;
 }
 
 .title {
